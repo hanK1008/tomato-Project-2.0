@@ -14,7 +14,7 @@ marks = ""
 app_timer = None
 
 
-# ---------------------------- TIMER RESET ------------------------------- # 
+# ---------------------------- TIMER RESET ------------------------------- #
 def reset_timer():
     global marks, reps
     window.after_cancel(app_timer)
@@ -52,12 +52,12 @@ def start_timer():
         count_down(WORK_MIN*60)
         timer.config(text="Work", fg=GREEN)
     # The below code will fix the issue where user can press start multiple time and multiple session start at once
-    # and user have to stop the session manually
-    start_button.config(state=DISABLED)  # It will make button disable after user pressed the start button
+    # and user have to stop all the sessions manually
+    # It will make button disable after user pressed the start button
+    start_button.config(state=DISABLED)
 
-
-        # It will fix the bug where you can start multiple
-        # counter on top of each other and you have to manually reset them
+    # It will fix the bug where you can start multiple
+    # counter on top of each other and you have to manually reset them
     start_button.config(state=DISABLED)
 
 # Creating function so window will pop-up from behind all the window and on the top when break will start
@@ -65,14 +65,16 @@ def start_timer():
 
 
 def raise_above_all():
-    window.deiconify()                  # it will make window maximize in background if minimized 1st hand
-                                    # Note: Window will not get popped up infront if not maximized state already
+    # it will make window maximize in background if minimized 1st hand
+    window.deiconify()
+    # Note: Window will not get popped up infront if not maximized state already
     window.attributes('-topmost', 1)    # it will make the window popup
-    window.attributes('-topmost', 0)    # it makes window to let go him self back of the other window if we click on
+    # it makes window to let go him self back of the other window if we click on
+    window.attributes('-topmost', 0)
     # other window or other window it will remain on the top and have to minimize manually
 
 
-# ---------------------------- COUNTDOWN MECHANISM ------------------------------- # 
+# ---------------------------- COUNTDOWN MECHANISM ------------------------------- #
 
 # use after method
 # as creating simple loop with while loop to looping through code and changing break the code as the code is already in
@@ -117,7 +119,8 @@ canvas = Canvas(width=200, height=224, bg=YELLOW, highlightthickness=0)
 # changing bg color and removing canvas thickness
 
 canvas.create_image(100, 112, image=tomato_img)
-timer_text = canvas.create_text(100, 130, text="00:00", fill="white", font=(FONT_NAME, 34, "bold"))
+timer_text = canvas.create_text(
+    100, 130, text="00:00", fill="white", font=(FONT_NAME, 34, "bold"))
 canvas.grid(column=1, row=1)
 
 # count_down(5)
@@ -131,11 +134,13 @@ check_mark = Label(fg=GREEN, bg=YELLOW)
 check_mark.grid(row=3, column=1)
 
 # Start button
-start_button = Button(text="Start", bg=YELLOW, highlightthickness=0, command=start_timer)
+start_button = Button(text="Start", bg=YELLOW,
+                      highlightthickness=0, command=start_timer)
 start_button.grid(column=0, row=2)
 
 # Reset button
-reset_button = Button(text="Reset", bg=YELLOW, highlightthickness=0, command=reset_timer)
+reset_button = Button(text="Reset", bg=YELLOW,
+                      highlightthickness=0, command=reset_timer)
 reset_button.grid(column=2, row=2)
 
 

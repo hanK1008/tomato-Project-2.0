@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 import pygame
 # ---------------------------- CONSTANTS ------------------------------- #
 PINK = "#e2979c"
@@ -27,7 +28,8 @@ def music_start():
     # To play the music loop=-1 will play music indefinietly
     pygame.mixer.music.play(loops=-1)
     # Ddefault volume set to 0.3 so it wont start very loud
-    pygame.mixer.music.set_volume(0.3)
+    # After trial and error I get this value, and feels perfect match for me 0.0375
+    pygame.mixer.music.set_volume(0.0375)
 
 
 # ---------------- MUSIC START & START BUTTON FUNCTION ------------------ #
@@ -43,7 +45,7 @@ def set_volume(x):
     current_voulume = volume_slider.get()
     # As I select slider from 0-100 so dividing the value as pygame support value between 0-1 only (and I need very low sound)
     # If you need high sound decrease the number to 100 so it will give actual value from 0-1
-    set_volume = current_voulume/1500
+    set_volume = current_voulume/300
     pygame.mixer.music.set_volume(set_volume)
 
 # ---------------------------- TIMER RESET ------------------------------- #
@@ -91,6 +93,9 @@ def start_timer():
         count_down(WORK_MIN*60)
         timer.config(text="Work", fg=GREEN)
         pygame.mixer.music.unpause()  # It will resume the music when break start
+        messagebox.showinfo(title="Healthy Instructions",
+                            message="Please wear your computer glasses, then start your work.\nTake a sip of water before starting anything.")
+
     # The below code will fix the issue where user can press start multiple time and multiple session start at once
     # and user have to stop all the sessions manually
     # It will make button disable after user pressed the start button
@@ -138,7 +143,7 @@ def count_down(count):
         canvas.itemconfig(timer_text, text=f"{minute_time}:{second_time}")
     if count > 0:
         global app_timer
-        app_timer = window.after(1000, count_down, count-1)
+        app_timer = window.after(10, count_down, count-1)
 
     # for testing purpose use 10 mili-second instead of 1000 mili-second so timer will run fast
     else:
@@ -192,7 +197,7 @@ reset_button.grid(column=2, row=2)
 style = ttk.Style()
 style.configure("TScale", background=YELLOW)
 volume_slider = ttk.Scale(
-    from_=0, to=100, orient=HORIZONTAL, value=50, length=180, style="TScale", command=set_volume)
+    from_=0, to=100, orient=HORIZONTAL, value=12, length=180, style="TScale", command=set_volume)
 volume_slider.grid(column=1, row=4)
 
 

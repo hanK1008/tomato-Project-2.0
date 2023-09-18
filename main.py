@@ -8,9 +8,9 @@ RED = "#e7305b"
 GREEN = "#9bdeac"
 YELLOW = "#f7f5dd"
 FONT_NAME = "Courier"
-WORK_MIN = 25
-SHORT_BREAK_MIN = 5
-LONG_BREAK_MIN = 20
+work_min = 25
+short_break_min = 5
+long_break_min = 20
 reps = 0
 CHECK_MARK = "✔"
 marks = ""
@@ -76,13 +76,13 @@ def start_timer():
     reps += 1
 
     if reps % 8 == 0:
-        count_down(LONG_BREAK_MIN*60)
+        count_down(long_break_min*60)
         timer.config(text="Break", fg=RED)
         raise_above_all()
         pygame.mixer.music.pause()  # It will pause the music when break start
 
     elif reps % 2 == 0:
-        count_down(SHORT_BREAK_MIN*60)
+        count_down(short_break_min*60)
         timer.config(text="Break", fg=PINK)
         marks += CHECK_MARK
         check_mark.config(text=marks)
@@ -90,7 +90,7 @@ def start_timer():
         pygame.mixer.music.pause()  # It will pause the music when break start
 
     else:
-        count_down(WORK_MIN*60)
+        count_down(work_min*60)
         timer.config(text="Work", fg=GREEN)
         pygame.mixer.music.unpause()  # It will resume the music when break start
         messagebox.showinfo(title="Healthy Instructions",
@@ -155,27 +155,27 @@ def count_down(count):
 
 def session_timer(option):
     setting_window.destroy()
-    global WORK_MIN, SHORT_BREAK_MIN, LONG_BREAK_MIN
+    global long_break_minn, short_break_min, work_min
 
     if option == "thirty":
-        WORK_MIN = 30
-        SHORT_BREAK_MIN = 5
-        LONG_BREAK_MIN = 20
+        work_min = 30
+        short_break_min = 5
+        long_break_min = 20
 
     elif option == "fortyfive":
-        WORK_MIN = 45
-        SHORT_BREAK_MIN = 5
-        LONG_BREAK_MIN = 30
+        work_min = 45
+        short_break_min = 5
+        long_break_min = 30
 
     elif option == "sixty":
-        WORK_MIN = 60
-        SHORT_BREAK_MIN = 10
-        LONG_BREAK_MIN = 60
+        work_min = 60
+        short_break_min = 10
+        long_break_min = 60
 
     else:
-        WORK_MIN = 25
-        SHORT_BREAK_MIN = 5
-        LONG_BREAK_MIN = 20
+        work_min = 25
+        short_break_min = 5
+        long_break_min = 20
 
 
 def timer_setting():
@@ -188,22 +188,22 @@ def timer_setting():
     # for selecting different window for adding button in it add name of the wondow at the start of the creating button
     default_button = Button(setting_window, text="Default", bg=YELLOW,
                             highlightthickness=0, command=lambda: session_timer("default"))
-    default_button.grid(column=1, row=1)
+    default_button.grid(column=1, row=1, padx=10, pady=10)
 
     # 30/5/20 button
     thirty_button = Button(setting_window, text="30/5/20", bg=YELLOW,
                            highlightthickness=0, command=lambda: session_timer("thirty"))
-    thirty_button.grid(column=2, row=1)
+    thirty_button.grid(column=2, row=1, padx=10, pady=10)
 
     # 45/5/30 button
     thirty_button = Button(setting_window, text="45/5/30", bg=YELLOW,
                            highlightthickness=0, command=lambda: session_timer("fortyfive"))
-    thirty_button.grid(column=1, row=2)
+    thirty_button.grid(column=3, row=1, padx=10, pady=10)
 
     # 60/10/60 button
     thirty_button = Button(setting_window, text="60/10/60", bg=YELLOW,
                            highlightthickness=0, command=lambda: session_timer("sixty"))
-    thirty_button.grid(column=2, row=2)
+    thirty_button.grid(column=4, row=1, padx=10, pady=10)
 
 
 # ---------------------------- UI SETUP ------------------------------- #

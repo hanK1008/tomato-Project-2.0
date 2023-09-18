@@ -150,6 +150,61 @@ def count_down(count):
         start_timer()
 #     Finishing the project
 
+# ---------------------------- TIMER SETTING------------------------------- #
+
+
+def session_timer(option):
+    setting_window.destroy()
+    global WORK_MIN, SHORT_BREAK_MIN, LONG_BREAK_MIN
+
+    if option == "thirty":
+        WORK_MIN = 30
+        SHORT_BREAK_MIN = 5
+        LONG_BREAK_MIN = 20
+
+    elif option == "fortyfive":
+        WORK_MIN = 45
+        SHORT_BREAK_MIN = 5
+        LONG_BREAK_MIN = 30
+
+    elif option == "sixty":
+        WORK_MIN = 60
+        SHORT_BREAK_MIN = 10
+        LONG_BREAK_MIN = 60
+
+    else:
+        WORK_MIN = 25
+        SHORT_BREAK_MIN = 5
+        LONG_BREAK_MIN = 20
+
+
+def timer_setting():
+    global setting_window  # We have to make it global so we can access outside of the fuction to close automatically after pressing any button
+    setting_window = Toplevel(window)  # Toplevel is way to make popup window
+    setting_window.title("Timer setting")
+    setting_window.config(padx=20, pady=20, bg=YELLOW)
+
+    # Setting button
+    # for selecting different window for adding button in it add name of the wondow at the start of the creating button
+    default_button = Button(setting_window, text="Default", bg=YELLOW,
+                            highlightthickness=0, command=lambda: session_timer("default"))
+    default_button.grid(column=1, row=1)
+
+    # 30/5/20 button
+    thirty_button = Button(setting_window, text="30/5/20", bg=YELLOW,
+                           highlightthickness=0, command=lambda: session_timer("thirty"))
+    thirty_button.grid(column=2, row=1)
+
+    # 45/5/30 button
+    thirty_button = Button(setting_window, text="45/5/30", bg=YELLOW,
+                           highlightthickness=0, command=lambda: session_timer("fortyfive"))
+    thirty_button.grid(column=1, row=2)
+
+    # 60/10/60 button
+    thirty_button = Button(setting_window, text="60/10/60", bg=YELLOW,
+                           highlightthickness=0, command=lambda: session_timer("sixty"))
+    thirty_button.grid(column=2, row=2)
+
 
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
@@ -162,7 +217,7 @@ tomato_img = PhotoImage(file="images/tomato.png")
 
 
 # Changing the title image of the app
-window.iconphoto(False, tomato_img)
+window.iconphoto(True, tomato_img)
 
 canvas = Canvas(width=200, height=224, bg=YELLOW, highlightthickness=0)
 # changing bg color and removing canvas thickness
@@ -204,5 +259,10 @@ volume_slider.grid(column=1, row=4)
 # Volume label
 volume_lable = Label(text="Volume", bg=YELLOW)
 volume_lable.grid(row=5, column=1)
+
+# Setting button
+setting_button = Button(text="Setting", bg=YELLOW,
+                        highlightthickness=0, command=timer_setting)
+setting_button.grid(column=1, row=6)
 
 window.mainloop()

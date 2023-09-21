@@ -59,21 +59,25 @@ def reset_timer():
     timer.config(text="Timer")
     check_mark.config(text=marks)
     canvas.itemconfig(timer_text, text="00:00")
-    # when user press button the start button go in function mode again
-    start_button.config(state=NORMAL)
-
+    # when user press button the start/setting button go in function mode again
     # Below code will make start button active again
     # refer to start_timer function to see why I disabled the button in first place
     start_button.config(state=NORMAL)
+    setting_button.grid(column=2, row=2)  # it will reappear the button
+    # it will make the button dissapear after resetting the session
+    reset_button.grid_forget()
 
-    # stop the music when user press reset timer
-    pygame.mixer.music.stop()
+    pygame.mixer.music.stop()  # stop the music when user press reset timer
 
 
 # ---------------------------- TIMER MECHANISM ------------------------------- #
 def start_timer():
     global reps, marks
     reps += 1
+    # it will make the button dissapear after the session start
+    setting_button.grid_forget()
+    # it will make the reset button appear after the session start
+    reset_button.grid(column=2, row=2)
 
     if reps % 8 == 0:
         count_down(long_break_min*60)
@@ -99,15 +103,10 @@ def start_timer():
     # The below code will fix the issue where user can press start multiple time and multiple session start at once
     # and user have to stop all the sessions manually
     # It will make button disable after user pressed the start button
-    start_button.config(state=DISABLED)
-
-    # # Below code will load the music and play that after pressing start
-    # pygame.mixer.music.load(filename="audio.mp3")    # To Load the music
-    # pygame.mixer.music.play()                        # To play the music
-
     # It will fix the bug where you can start multiple
     # counter on top of each other and you have to manually reset them
     start_button.config(state=DISABLED)
+
 
 # Creating function so window will pop-up from behind all the window and on the top when break will start
 # ---------------------------- Pop-up window MECHANISM ------------------------------- #
@@ -118,7 +117,7 @@ def raise_above_all():
     window.deiconify()
     # Note: Window will not get popped up infront if not maximized state already
     window.attributes('-topmost', 1)    # it will make the window popup
-    # it makes window to let go him self back of the other window if we click on
+    # it makes window to let go it self back of the other window if we click on
     window.attributes('-topmost', 0)
     # other window or other window it will remain on the top and have to minimize manually
 
@@ -143,7 +142,7 @@ def count_down(count):
         canvas.itemconfig(timer_text, text=f"{minute_time}:{second_time}")
     if count > 0:
         global app_timer
-        app_timer = window.after(10, count_down, count-1)
+        app_timer = window.after(1000, count_down, count-1)
 
     # for testing purpose use 10 mili-second instead of 1000 mili-second so timer will run fast
     else:
@@ -155,7 +154,9 @@ def count_down(count):
 
 def session_timer(option):
     setting_window.destroy()
-    global long_break_minn, short_break_min, work_min
+    setting_button.config(state=NORMAL)
+
+    global long_break_min, short_break_min, work_min
 
     if option == "thirty":
         work_min = 30
@@ -186,7 +187,7 @@ def timer_setting():
 
     # Setting button
     # for selecting different window for adding button in it add name of the wondow at the start of the creating button
-    default_button = Button(setting_window, text="Default", bg=YELLOW,
+    default_button = Button(setting_window, text="25/5/20", bg=YELLOW,
                             highlightthickness=0, command=lambda: session_timer("default"))
     default_button.grid(column=1, row=1, padx=10, pady=10)
 
@@ -205,11 +206,13 @@ def timer_setting():
                            highlightthickness=0, command=lambda: session_timer("sixty"))
     thirty_button.grid(column=4, row=1, padx=10, pady=10)
 
+    setting_button.config(state=DISABLED)
+
 
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
 window.title("PomoFi")
-window.config(padx=100, pady=50, bg=YELLOW)
+window.config(padx=100, pady=30, bg=YELLOW)
 
 
 tomato_img = PhotoImage(file="images/tomato.png")
@@ -245,7 +248,7 @@ start_button.grid(column=0, row=2)
 # Reset button
 reset_button = Button(text="Reset", bg=YELLOW,
                       highlightthickness=0, command=reset_timer)
-reset_button.grid(column=2, row=2)
+# reset_button.grid(column=2, row=2)
 
 # Volume Slider
 
@@ -263,6 +266,8 @@ volume_lable.grid(row=5, column=1)
 # Setting button
 setting_button = Button(text="Setting", bg=YELLOW,
                         highlightthickness=0, command=timer_setting)
-setting_button.grid(column=1, row=6)
+# setting_button.grid(column=1, row=6, pady=10)
+setting_button.grid(column=2, row=2)
+
 
 window.mainloop()
